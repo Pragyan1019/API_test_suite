@@ -34,7 +34,6 @@ test.describe('post cases',()=>{  let apiContext: APIRequestContext;
         })
         expect(response.status()).toBe(201);
         const responseBody = await response.json();
-        console.log(responseBody);
         expect(responseBody.id).toBeTruthy()
         expect(responseBody.title).toBe(newPost.title);
         expect(responseBody.body).toBe(newPost.body);
@@ -44,8 +43,10 @@ test.describe('post cases',()=>{  let apiContext: APIRequestContext;
         const response = await apiContext.post('/posts',{
             data: titlelessPost
         })
-        expect.soft(response.status()).toBe(101)
-    })
+// JSONPlaceholder does not validate request body
+// A real API should return 400 for missing required fields
+// This test documents the API's current behaviour
+        expect(response.status()).toBe(201);    })
     test('get post with non existing id @negative',async()=>{
         const response = await apiContext.get('/posts/999')
         expect(response.status()).toBe(404);
