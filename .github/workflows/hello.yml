@@ -1,0 +1,13 @@
+name : Demo workflow
+
+on: push 
+
+jobs:
+  say-Hello:
+    runs-on : ubuntu-latest
+    steps:
+      -name : Print hello
+      run : echo 'Hello,Github actions'
+
+      -name : Show date 
+      run : date  
