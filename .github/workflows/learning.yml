@@ -1,0 +1,37 @@
+name: CI/CD pipeline
+
+on: 
+  push:
+    branches: [main]
+  pull_requests:
+    branches: [main]  
+
+# Build and test
+jobs:
+  build:
+    runs-on: ubuntu-latest
+  steps:
+    - name: Checkout Code     
+      uses: actions/checkout@v4
+     
+    - name: Setup node 
+      uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+    
+    - name: Install dependencies
+      run: npm ci 
+
+    - name: Install playwright
+      run: npm i playwright@latest
+
+    - name: Run tests 
+      run: npx playwright test post.spec.ts
+      run: npx playwright test users.spec.ts
+
+    - name : upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-files
+        path: playwright-report/   
+        retention-days: 10        
